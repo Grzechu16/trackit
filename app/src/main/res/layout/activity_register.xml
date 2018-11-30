@@ -4,12 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".RegisterActivity">
+    tools:context=".RegisterActivity"
+    android:background="@drawable/track1_transparent">
 
     <RelativeLayout
         android:id="@+id/register_relativeLayout1"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        >
 
         <TextView
             android:id="@+id/register_tTitle"
@@ -20,6 +22,7 @@
             android:layout_marginTop="10dp"
             android:text="@string/trackit"
             android:textSize="50dp"
+
             android:textStyle="italic" />
 
         <RelativeLayout
