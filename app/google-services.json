@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "326026634902",
+    "firebase_url": "https://trackit-fe7b0.firebaseio.com",
+    "project_id": "trackit-fe7b0",
+    "storage_bucket": "trackit-fe7b0.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:326026634902:android:7203f87d8ff3f879",
+        "android_client_info": {
+          "package_name": "com.example.dell.trackit"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "326026634902-9g3ik5bp0ojmtr9hu29qplbl5k8d3njk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.dell.trackit",
+            "certificate_hash": "fdf588a597c9ebfb7f25c7d8b6a0e6b822c02665"
+          }
+        },
+        {
+          "client_id": "326026634902-s6a2o9efoggmm2j0ajjkvtunu7vo5rhq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBYvOyF2h7pEkhi3tx3Bd46DuoTmWNI9Ag"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "326026634902-s6a2o9efoggmm2j0ajjkvtunu7vo5rhq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
