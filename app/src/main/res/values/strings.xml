@@ -27,4 +27,8 @@
     <string name="trackit">TrackIt!</string>
     <string name="register_BackToMenu">Back to menu</string>
     <string name="login_BackToMenu">Back to menu</string>
+    <string name="getLocation">Sprawdź połączenie z lokalizatorem</string>
+    <string name="show_current_position">Wyświetl pozycję</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="show_on_map">Pokaż na mapie</string>
 </resources>

@@ -30,19 +30,58 @@
         android:orientation="vertical">
 
         <Button
-            android:id="@+id/bSignIn"
-            android:textSize="30dp"
+            android:id="@+id/bGetLocation"
+            android:layout_width="247dp"
+            android:layout_height="wrap_content"
+            android:text="@string/getLocation"
+            android:textAllCaps="false"
+            android:textSize="23dp"
+
+            android:textStyle="italic" />
+        <Button
+            android:id="@+id/bShowCurrentPosition"
+            android:textAllCaps="false"
+
+            android:textSize="23dp"
             android:textStyle="italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/sign_in"/>
+            android:text="@string/show_current_position"/>
+
+        <TextView
+            android:id="@+id/tPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Ostatnia aktualizacja:"
+            android:textSize="23dp"
+            android:textColor="	#000000"/>
+
+        <TextView
+            android:id="@+id/tPositionDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20dp"
+            android:textColor="	#000000"/>
+
+        <TextView
+            android:id="@+id/tIsPositionUpdated"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Pozycja nieaktualna"
+            android:textSize="23dp"
+            android:textColor="#FF0000"/>
+
         <Button
-            android:id="@+id/bRegister"
+            android:id="@+id/bShowOnMap"
             android:textSize="20dp"
             android:textStyle="italic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/register"/>
+            android:text="@string/show_on_map"
+            android:textAllCaps="false"
+            android:layout_margin="20dp"
+            android:enabled="false"/>
 
 
     </LinearLayout>
