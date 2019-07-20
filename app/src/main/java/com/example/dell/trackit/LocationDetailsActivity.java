@@ -1,14 +1,21 @@
 package com.example.dell.trackit;
 
+import android.Manifest;
+import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.SmsManager;
 import android.text.Html;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -17,14 +24,23 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.nabinbhandari.android.permissions.PermissionHandler;
+import com.nabinbhandari.android.permissions.Permissions;
 
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class LocationDetailsActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -36,10 +52,23 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
     TextView textLatitude;
     @Bind(R.id.tDetails)
     TextView textDetails;
+    @Bind(R.id.b1)
+    TextView bB1;
+    @Bind(R.id.b10)
+    TextView bB10;
+    @Bind(R.id.b30)
+    TextView bB30;
+    @Bind(R.id.b60)
+    TextView bB60;
 
     private GoogleMap mMap;
     Location location;
     List<Address> addresses = null;
+    FirebaseDatabase trackItDatabase;
+    DatabaseReference databaseReference;
+    LatLng latLng = null;
+    SmsManager smsManager = null;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +92,15 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
         textLongitude.setText(Html.fromHtml("<b>Długość: </b>" + location.getLongitude()));
         textLatitude.setText(Html.fromHtml("<b>Szerokość: </b>" + location.getLatitude()));
         textDetails.setText(Html.fromHtml("<b>Adres: </b>" + location.getAddress()));
+
+        refreshLocation();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
 
-        LatLng latLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
+        latLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
         mMap.addMarker(new MarkerOptions().position(latLng).title("Current location"));
 
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
@@ -91,4 +122,58 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
 
     }
 
+    void refreshLocation() {
+        trackItDatabase = FirebaseDatabase.getInstance();
+        databaseReference = trackItDatabase.getReference().child("Tracker").child("devices").child("731536061");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+                                                    @Override
+                                                    public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                                        location = new Location();
+                                                        location.setLatitude(dataSnapshot.child("latitude").getValue(Double.class));
+                                                        location.setLongitude(dataSnapshot.child("longitude").getValue(Double.class));
+                                                        location.setUpdateTime(dataSnapshot.child("lastUpdated").getValue().toString());
+
+                                                        latLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
+                                                        mMap.addMarker(new MarkerOptions().position(latLng).title("Current location"));
+
+                                                        mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
+                                                        mMap.animateCamera( CameraUpdateFactory.newLatLngZoom(latLng, 15.0f ) );
+
+                                                        try {
+                                                            getAddressDetails(location);
+                                                        } catch (IOException e) {
+                                                            e.printStackTrace();
+                                                        }
+
+                                                        textPositionDate.setText(Html.fromHtml("<b>Data lokalizacji: </b>" + location.getUpdateTime()));
+                                                        textLongitude.setText(Html.fromHtml("<b>Długość: </b>" + location.getLongitude()));
+                                                        textLatitude.setText(Html.fromHtml("<b>Szerokość: </b>" + location.getLatitude()));
+                                                        textDetails.setText(Html.fromHtml("<b>Adres: </b>" + location.getAddress()));
+                                                    }
+
+                                                    @Override
+                                                    public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                                    }
+                                                }
+        );
+    }
+
+    @OnClick({R.id.b1, R.id.b10, R.id.b30, R.id.b60})
+    void sendSms(View view) {
+        if(view==bB1){
+            smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps1", null, null);
+        } else if(view==bB10){
+            smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps10", null, null);
+        } else if(view==bB30){
+            smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps30", null, null);
+        } else if(view==bB60){
+            smsManager = SmsManager.getDefault();
+            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps60", null, null);
+        }
+
+    }
 }

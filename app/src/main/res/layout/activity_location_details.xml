@@ -1,76 +1,120 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/track1_transparent"
+    android:orientation="vertical"
     tools:context=".LocationDetailsActivity">
 
     <LinearLayout
         android:id="@+id/linear1"
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/tPosition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="20dp"
             android:text="Aktualna pozycja:"
-            android:textSize="30dp"
             android:textColor="	#000000"
-            android:layout_marginBottom="20dp"/>
+            android:textSize="25dp"
+            />
 
         <TextView
             android:id="@+id/tPositionDate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="20dp"
-            android:textColor="	#000000"/>
+            android:textColor="	#000000"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tLongitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="20dp"
-            android:textColor="	#000000"/>
+            android:textColor="	#000000"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tLatitude"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
-            android:textSize="20dp"
-            android:textColor="	#000000"/>
+            android:textColor="	#000000"
+            android:textSize="20dp" />
 
         <TextView
             android:id="@+id/tDetails"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text=""
+            android:textColor="	#000000"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/tFollowTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text=" Wybierz czas śledzenia pojazdu"
+            android:textColor="	#000000"
+            android:textStyle="bold"
             android:textSize="20dp"
-            android:textColor="	#000000"/>
+            android:layout_marginTop="20dp"
+            android:gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/b1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="1 min" />
+
+            <Button
+                android:id="@+id/b10"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="10 min" />
+
+            <Button
+                android:id="@+id/b30"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="30 min" />
+
+            <Button
+                android:id="@+id/b60"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="60 min" />
+
+        </LinearLayout>
 
     </LinearLayout>
 
+
     <LinearLayout
         android:id="@+id/linear2"
-        android:orientation="vertical"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        android:orientation="vertical">
 
         <fragment
             android:id="@+id/mapFragment"
+            class="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            class="com.google.android.gms.maps.SupportMapFragment" />
+            android:layout_height="match_parent" />
 
     </LinearLayout>
 </LinearLayout>
