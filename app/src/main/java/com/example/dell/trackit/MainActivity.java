@@ -1,14 +1,19 @@
 package com.example.dell.trackit;
 
 import android.Manifest;
+import android.app.Activity;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +38,11 @@ public class MainActivity extends AppCompatActivity {
     SmsManager smsManager = null;
     FirebaseDatabase trackItDatabase;
     DatabaseReference databaseReference;
-    boolean smsSend = false;
     Location location;
+    BroadcastReceiver sentReceiver = null;
+    BroadcastReceiver deliveryReceiver = null;
+    PendingIntent sentIntent;
+    PendingIntent deliveryIntent;
 
     @Bind(R.id.bGetLocation)
     Button buttonGetLocation;
@@ -51,6 +59,44 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        getLocation();
+        smsBroadcastRecInit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        smsBroadcastRecInit();
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        smsBroadcastRecInit();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        try {
+            unregisterReceiver(sentReceiver);
+            unregisterReceiver(deliveryReceiver);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+            unregisterReceiver(sentReceiver);
+            unregisterReceiver(deliveryReceiver);
+        } catch (Exception e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
     }
 
     @OnClick(R.id.bGetLocation)
@@ -65,24 +111,30 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGranted() {
                 smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps", null, null);
-                smsSend = true;
+                smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps1", sentIntent, deliveryIntent);
             }
 
             @Override
             public void onDenied(Context context, ArrayList<String> deniedPermissions) {
                 Toast toast = Toast.makeText(context, "Uprawnienia nie udzielone", Toast.LENGTH_SHORT);
                 toast.show();
-                smsSend = true;
             }
         });
-        if (smsSend) {
-            Toast toast = Toast.makeText(this, "Sms wysłany", Toast.LENGTH_SHORT);
-            toast.show();
+        if (location.getGpsStatus() == 1) {
+            textIsPositionUpdated.setVisibility(View.VISIBLE);
+            buttonShowOnMap.setVisibility(View.VISIBLE);
         }
     }
 
-    @OnClick(R.id.bShowCurrentPosition)
+    @OnClick(R.id.bShowOnMap)
+    void showOnMap() {
+        Intent intent = new Intent(this, LocationDetailsActivity.class);
+        //intent.putExtra("Longitude", String.valueOf(location.getLongitude()));
+        //intent.putExtra("Latitude", String.valueOf(location.getLatitude()));
+        intent.putExtra("location", location);
+        startActivity(intent);
+    }
+
     void getLocation() {
         trackItDatabase = FirebaseDatabase.getInstance();
         databaseReference = trackItDatabase.getReference().child("Tracker").child("devices").child("731536061");
@@ -95,13 +147,13 @@ public class MainActivity extends AppCompatActivity {
                                                         location.setUpdateTime(dataSnapshot.child("lastUpdated").getValue().toString());
                                                         location.setGpsStatus(dataSnapshot.child("validGps").getValue(Integer.class));
                                                         textPositionDate.setText(location.getUpdateTime());
-                                                        if (location.getGpsStatus() == 1) {
-                                                            textIsPositionUpdated.setTextColor(Color.parseColor("#228B22"));
-                                                            textIsPositionUpdated.setText("Pozycja aktualna");
-                                                            buttonShowOnMap.setEnabled(true);
-                                                        } else {
+                                                        if (location.getGpsStatus() != 1) {
                                                             Toast toast = Toast.makeText(MainActivity.this, "Brak aktualnej pozycji w bazie", Toast.LENGTH_SHORT);
                                                             toast.show();
+                                                        } else {
+                                                            textIsPositionUpdated.setTextColor(Color.parseColor("#228B22"));
+                                                            textIsPositionUpdated.setText("Współrzędne dostępne");
+                                                            buttonShowOnMap.setEnabled(true);
                                                         }
                                                     }
 
@@ -113,30 +165,45 @@ public class MainActivity extends AppCompatActivity {
         );
     }
 
-    @OnClick(R.id.bShowOnMap)
-    void showOnMap() {
-        Intent intent = new Intent(this, LocationDetailsActivity.class);
-        //intent.putExtra("Longitude", String.valueOf(location.getLongitude()));
-        //intent.putExtra("Latitude", String.valueOf(location.getLatitude()));
-        intent.putExtra("location", location);
-        startActivity(intent);
-    }
+    void smsBroadcastRecInit() {
+        String smsSent = "SMS_SENT";
+        String smsDelivered = "SMS_DELIVERED";
+        sentIntent = PendingIntent.getBroadcast(this, 0, new Intent(smsSent), 0);
+        deliveryIntent = PendingIntent.getBroadcast(this, 0, new Intent(smsDelivered), 0);
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String[] permissions, int[] grantResults) {
-        switch (requestCode) {
-            case SEND_SMS_PERMISSION: {
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    sendSms();
-                } else {
-                    Toast toast = Toast.makeText(this, "Uprawnienia nie udzielone, brak możliwości wysłania sms!", Toast.LENGTH_SHORT);
-                    toast.show();
-
+        if ((sentReceiver == null) && deliveryReceiver == null) {
+            sentReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch (getResultCode()) {
+                        case Activity.RESULT_OK:
+                            Toast.makeText(getBaseContext(), "SMS wysłany", Toast.LENGTH_SHORT).show();
+                            break;
+                        case Activity.RESULT_CANCELED:
+                            Toast.makeText(getBaseContext(), "Błąd wysyłania sms", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
                 }
-                return;
-            }
+            };
+            deliveryReceiver = new BroadcastReceiver() {
+                @Override
+                public void onReceive(Context context, Intent intent) {
+                    switch (getResultCode()) {
+                        case Activity.RESULT_OK:
+                            Toast.makeText(getBaseContext(), "SMS doręczony", Toast.LENGTH_SHORT).show();
+                            break;
+
+                        case Activity.RESULT_CANCELED:
+                            Toast.makeText(getBaseContext(), "SMS niedoręczony", Toast.LENGTH_SHORT).show();
+                            break;
+                    }
+                }
+            };
+        } else {
+            registerReceiver(sentReceiver, new IntentFilter(smsSent));
+            registerReceiver(deliveryReceiver, new IntentFilter(smsDelivered));
         }
+
+
     }
 }
