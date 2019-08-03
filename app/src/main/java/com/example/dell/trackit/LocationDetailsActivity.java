@@ -53,13 +53,15 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
     @Bind(R.id.tDetails)
     TextView textDetails;
     @Bind(R.id.b1)
-    TextView bB1;
+    Button bB1;
     @Bind(R.id.b10)
-    TextView bB10;
+    Button bB10;
     @Bind(R.id.b30)
-    TextView bB30;
+    Button bB30;
     @Bind(R.id.b60)
-    TextView bB60;
+    Button bB60;
+    @Bind(R.id.bMapFull)
+    Button bMapFull;
 
     private GoogleMap mMap;
     Location location;
@@ -131,7 +133,8 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
                                                         location = new Location();
                                                         location.setLatitude(dataSnapshot.child("latitude").getValue(Double.class));
                                                         location.setLongitude(dataSnapshot.child("longitude").getValue(Double.class));
-                                                        location.setUpdateTime(dataSnapshot.child("lastUpdated").getValue().toString());
+                                                        location.setUpdateTime(dataSnapshot.child("updateTime").getValue().toString());
+                                                        location.setQueryTime(dataSnapshot.child("queryTime").getValue().toString());
 
                                                         latLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
                                                         mMap.addMarker(new MarkerOptions().position(latLng).title("Current location"));
@@ -158,6 +161,14 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
                                                 }
         );
     }
+
+    @OnClick(R.id.bMapFull)
+    void showFullMap(){
+        Intent fullMapIntent = new Intent(this, MapsActivity.class);
+        fullMapIntent.putExtra("mapLocation", location);
+        startActivity(fullMapIntent);
+    }
+
 
     @OnClick({R.id.b1, R.id.b10, R.id.b30, R.id.b60})
     void sendSms(View view) {

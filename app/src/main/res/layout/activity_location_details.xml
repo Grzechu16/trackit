@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@drawable/track1_transparent"
+    android:background="@drawable/pexels2"
     android:orientation="vertical"
     tools:context=".LocationDetailsActivity">
 
@@ -19,11 +19,11 @@
             android:id="@+id/tPosition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginBottom="20dp"
             android:text="Aktualna pozycja:"
             android:textColor="	#000000"
-            android:textSize="25dp"
-            />
+            android:textSize="25dp" />
 
         <TextView
             android:id="@+id/tPositionDate"
@@ -61,12 +61,12 @@
             android:id="@+id/tFollowTime"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:gravity="center"
             android:text=" Wybierz czas śledzenia pojazdu"
             android:textColor="	#000000"
-            android:textStyle="bold"
             android:textSize="20dp"
-            android:layout_marginTop="20dp"
-            android:gravity="center"/>
+            android:textStyle="bold" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -110,11 +110,34 @@
         android:layout_weight="1"
         android:orientation="vertical">
 
-        <fragment
-            android:id="@+id/mapFragment"
-            class="com.google.android.gms.maps.SupportMapFragment"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <fragment
+                android:id="@+id/mapFragment"
+                class="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <Button
+                android:id="@+id/bMapFull"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentBottom="true"
+                android:layout_width="85dp"
+                android:layout_height="85dp"
+                android:background="@drawable/circle"
+                android:drawableTop="@android:drawable/ic_dialog_map"
+                android:paddingTop="20dp"
+                android:textAllCaps="false"
+                android:text="Google Map"
+                android:textSize="10dp"
+                android:textColor="#000000" />
+
+        </RelativeLayout>
+
 
     </LinearLayout>
+
+
 </LinearLayout>

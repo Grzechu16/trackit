@@ -17,13 +17,15 @@ public class Location implements Parcelable {
     private String knownName = "";
     private String address = "";
     private String updateTime = "";
+    private String queryTime = "";
 
     public Location() {
     }
 
-    public Location(double longitude, double latitude, String city, String state, String zip, String country, String knownName, String address, String updateTime) {
+    public Location(double longitude, double latitude, int gpsStatus, String city, String state, String zip, String country, String knownName, String address, String updateTime, String queryTime) {
         this.longitude = longitude;
         this.latitude = latitude;
+        this.gpsStatus = gpsStatus;
         this.city = city;
         this.state = state;
         this.zip = zip;
@@ -31,7 +33,7 @@ public class Location implements Parcelable {
         this.knownName = knownName;
         this.address = address;
         this.updateTime = updateTime;
-        this.gpsStatus = gpsStatus;
+        this.queryTime = queryTime;
     }
 
     public double getLongitude() {
@@ -106,6 +108,14 @@ public class Location implements Parcelable {
         this.updateTime = updateTime;
     }
 
+    public String getQueryTime() {
+        return queryTime;
+    }
+
+    public void setQueryTime(String queryTime) {
+        this.queryTime = queryTime;
+    }
+
     public int getGpsStatus() {
         return gpsStatus;
     }
@@ -125,6 +135,7 @@ public class Location implements Parcelable {
         parcel.writeDouble(latitude);
         parcel.writeInt(gpsStatus);
         parcel.writeString(updateTime);
+        parcel.writeString(queryTime);
     }
 
     public static final Parcelable.Creator<Location> CREATOR = new Parcelable.Creator<Location>() {
@@ -142,6 +153,7 @@ public class Location implements Parcelable {
         latitude = in.readDouble();
         gpsStatus = in.readInt();
         updateTime = in.readString();
+        queryTime = in.readString();
     }
 
 }

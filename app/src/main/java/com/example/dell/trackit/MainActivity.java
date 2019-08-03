@@ -111,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onGranted() {
                 smsManager = SmsManager.getDefault();
-                smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps1", sentIntent, deliveryIntent);
+                smsManager.sendTextMessage("730225319", null, "gps1", sentIntent, deliveryIntent);
             }
 
             @Override
@@ -129,8 +129,6 @@ public class MainActivity extends AppCompatActivity {
     @OnClick(R.id.bShowOnMap)
     void showOnMap() {
         Intent intent = new Intent(this, LocationDetailsActivity.class);
-        //intent.putExtra("Longitude", String.valueOf(location.getLongitude()));
-        //intent.putExtra("Latitude", String.valueOf(location.getLatitude()));
         intent.putExtra("location", location);
         startActivity(intent);
     }
@@ -144,7 +142,8 @@ public class MainActivity extends AppCompatActivity {
                                                         location = new Location();
                                                         location.setLatitude(dataSnapshot.child("latitude").getValue(Double.class));
                                                         location.setLongitude(dataSnapshot.child("longitude").getValue(Double.class));
-                                                        location.setUpdateTime(dataSnapshot.child("lastUpdated").getValue().toString());
+                                                        location.setUpdateTime(dataSnapshot.child("updateTime").getValue().toString());
+                                                        location.setQueryTime(dataSnapshot.child("queryTime").getValue().toString());
                                                         location.setGpsStatus(dataSnapshot.child("validGps").getValue(Integer.class));
                                                         textPositionDate.setText(location.getUpdateTime());
                                                         if (location.getGpsStatus() != 1) {
