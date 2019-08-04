@@ -27,8 +27,21 @@
     <string name="trackit">TrackIt!</string>
     <string name="register_BackToMenu">Back to menu</string>
     <string name="login_BackToMenu">Back to menu</string>
-    <string name="getLocation">Sprawdź połączenie z lokalizatorem</string>
-    <string name="show_current_position">Wyświetl pozycję</string>
+    <string name="main_getLocation">Sprawdź połączenie</string>
+    <string name="main_show_current_position">Wyświetl pozycję</string>
     <string name="title_activity_maps">Map</string>
-    <string name="show_on_map">Pokaż na mapie</string>
+    <string name="main_show_on_map">Pokaż na mapie</string>
+    <string name="location_details_title">Aktualna pozycja:</string>
+    <string name="location_details_time">Wybierz czas śledzenia pojazdu</string>
+    <string name="location_details_1_min">1 min</string>
+    <string name="location_details_10_min">10 min</string>
+    <string name="location_details_30_min">30 min</string>
+    <string name="location_details_60_min">60 min</string>
+    <string name="appTitle">TrackIt!</string>
+    <string name="main_status">Status lokalizatora</string>
+    <string name="main_last_sms">Ostatni wysłany sms:</string>
+    <string name="main_last_position">Ostatnia prawidłowa pozycja</string>
+    <string name="main_sim_number">Numer SIM lokalizatora</string>
+    <string name="main_gps_status">GPS status: BRAK POŁĄCZENIA</string>
+    <string name="main_gsm_status">GSM status: BRAK POŁĄCZENIA</string>
 </resources>

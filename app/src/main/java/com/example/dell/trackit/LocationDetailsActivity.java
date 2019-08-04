@@ -1,23 +1,17 @@
 package com.example.dell.trackit;
 
-import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.location.Address;
 import android.location.Geocoder;
-import android.support.annotation.NonNull;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.SmsManager;
 import android.text.Html;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -29,12 +23,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.nabinbhandari.android.permissions.PermissionHandler;
-import com.nabinbhandari.android.permissions.Permissions;
 
 import java.io.IOException;
-import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -70,7 +60,7 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
     DatabaseReference databaseReference;
     LatLng latLng = null;
     SmsManager smsManager = null;
-
+    String phoneNumber = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -85,6 +75,7 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
 
         Intent intent = getIntent();
         location = intent.getParcelableExtra("location");
+        phoneNumber = intent.getStringExtra("phoneNumber");
         try {
             getAddressDetails(location);
         } catch (IOException e) {
@@ -101,13 +92,10 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
     @Override
     public void onMapReady(GoogleMap googleMap) {
         this.mMap = googleMap;
-
         latLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
         mMap.addMarker(new MarkerOptions().position(latLng).title("Current location"));
-
         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mMap.animateCamera( CameraUpdateFactory.newLatLngZoom(latLng, 17.0f ) );
-
     }
 
     public void getAddressDetails(Location location) throws IOException {
@@ -121,12 +109,11 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
         location.setCountry(addresses.get(0).getCountryName());
         location.setKnownName(addresses.get(0).getFeatureName());
         location.setAddress(addresses.get(0).getAddressLine(0));
-
     }
 
     void refreshLocation() {
         trackItDatabase = FirebaseDatabase.getInstance();
-        databaseReference = trackItDatabase.getReference().child("Tracker").child("devices").child("731536061");
+        databaseReference = trackItDatabase.getReference().child("TrackIt").child("devices").child("731536061");
         databaseReference.addValueEventListener(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -138,7 +125,6 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
 
                                                         latLng = new LatLng(Double.valueOf(location.getLatitude()), Double.valueOf(location.getLongitude()));
                                                         mMap.addMarker(new MarkerOptions().position(latLng).title("Current location"));
-
                                                         mMap.moveCamera(CameraUpdateFactory.newLatLng(latLng));
                                                         mMap.animateCamera( CameraUpdateFactory.newLatLngZoom(latLng, 15.0f ) );
 
@@ -147,7 +133,6 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
                                                         } catch (IOException e) {
                                                             e.printStackTrace();
                                                         }
-
                                                         textPositionDate.setText(Html.fromHtml("<b>Data lokalizacji: </b>" + location.getUpdateTime()));
                                                         textLongitude.setText(Html.fromHtml("<b>Długość: </b>" + location.getLongitude()));
                                                         textLatitude.setText(Html.fromHtml("<b>Szerokość: </b>" + location.getLatitude()));
@@ -174,16 +159,16 @@ public class LocationDetailsActivity extends AppCompatActivity implements OnMapR
     void sendSms(View view) {
         if(view==bB1){
             smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps1", null, null);
+            smsManager.sendTextMessage(phoneNumber, null, "gps1", null, null);
         } else if(view==bB10){
             smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps10", null, null);
+            smsManager.sendTextMessage(phoneNumber, null, "gps10", null, null);
         } else if(view==bB30){
             smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps30", null, null);
+            smsManager.sendTextMessage(phoneNumber, null, "gps30", null, null);
         } else if(view==bB60){
             smsManager = SmsManager.getDefault();
-            smsManager.sendTextMessage("667794502" /*"730225319"*/, null, "gps60", null, null);
+            smsManager.sendTextMessage(phoneNumber, null, "gps60", null, null);
         }
 
     }

@@ -3,8 +3,6 @@ package com.example.dell.trackit;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import java.io.Serializable;
-
 public class Location implements Parcelable {
 
     private double longitude = 0;

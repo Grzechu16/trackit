@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/pexels2"
-    tools:context=".MainActivity"
-    >
+    tools:context=".MainActivity">
 
     <RelativeLayout
+        android:id="@+id/relativeLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -18,74 +17,113 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="50dp"
-            android:layout_marginBottom="50dp"
-            android:text="TrackIt!"
-            android:textSize="50dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/appTitle"
+            android:textSize="45dp"
             android:textStyle="italic" />
 
         <LinearLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/tTitle"
             android:gravity="center"
             android:orientation="vertical">
 
-            <Button
-                android:id="@+id/bGetLocation"
-                android:layout_width="247dp"
-                android:layout_height="wrap_content"
-                android:text="@string/getLocation"
-                android:textAllCaps="false"
-                android:textSize="23dp"
-                android:textStyle="italic" />
-
-            <Button
-                android:id="@+id/bShowCurrentPosition"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="50dp"
-                android:text="@string/show_current_position"
-                android:textAllCaps="false"
-                android:textSize="23dp"
-                android:textStyle="italic"
-
-                />
-
             <TextView
                 android:id="@+id/tPosition"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Ostatnia aktualizacja:"
+                android:layout_marginTop="30dp"
+                android:text="@string/main_status"
                 android:textColor="	#000000"
-                android:textSize="23dp"
-                 />
+                android:textSize="25dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tQueryDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="15dp"
+                android:text="@string/main_last_sms"
+                android:textColor="	#000000"
+                android:textSize="18dp" />
+
+            <TextView
+                android:id="@+id/tQueryDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="	#000000"
+                android:textSize="16dp" />
+
+            <TextView
+                android:id="@+id/tPositionDateTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/main_last_position"
+                android:textColor="	#000000"
+                android:textSize="18dp" />
 
             <TextView
                 android:id="@+id/tPositionDate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:textSize="20dp" />
+                android:textColor="	#000000"
+                android:textSize="16dp" />
 
-            <TextView
-                android:id="@+id/tIsPositionUpdated"
+            <EditText
+                android:id="@+id/etPhoneNumber"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Pozycja nieaktualna"
-                android:textColor="#FF0000"
-                android:textSize="23dp"
- />
+                android:layout_marginTop="25dp"
+                android:gravity="center"
+                android:hint="@string/main_sim_number"
+                android:inputType="number" />
+
+            <Button
+                android:id="@+id/bGetLocation"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:text="@string/main_getLocation"
+                android:textAllCaps="false"
+                android:textSize="18dp"
+                android:textStyle="italic" />
 
             <Button
                 android:id="@+id/bShowOnMap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="20dp"
-                android:text="@string/show_on_map"
+                android:text="@string/main_show_on_map"
                 android:textAllCaps="false"
-                android:textSize="20dp"
-                android:textStyle="italic"                 />
+                android:textSize="18dp"
+                android:textStyle="italic" />
 
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:indeterminateDrawable="@drawable/progress"
+                android:visibility="invisible" />
+
+            <TextView
+                android:id="@+id/tGpsConnection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="30dp"
+                android:text="@string/main_gps_status"
+                android:textColor="	#000000" />
+
+            <TextView
+                android:id="@+id/tGsmConnection"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/main_gsm_status"
+                android:textColor="	#000000" />
 
         </LinearLayout>
 

@@ -16,9 +16,7 @@ import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity {
 
-    private GoogleMap mMap;
     Location location = null;
-    LatLng latLng = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +31,4 @@ public class MapsActivity extends FragmentActivity {
         startActivity(googleMapIntent);
 
     }
-
-
 }
