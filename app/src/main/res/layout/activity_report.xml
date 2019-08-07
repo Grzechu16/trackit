@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/pexels2"
+    tools:context=".Report">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/tTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="15dp"
+            android:text="@string/appTitle"
+            android:textSize="45dp"
+            android:textStyle="italic" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tTitle"
+            android:layout_marginTop="100dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tMakeCall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Zadzwoń"
+                android:textColor="#000000"
+                android:textSize="25dp" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/bCall112"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="112"
+
+                    android:textSize="18dp" />
+
+                <Button
+                    android:id="@+id/bCallPolice"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="997"
+
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="50dp"
+                android:text="Wyślij współrzędne"
+                android:textColor="#000000"
+                android:textSize="25dp" />
+
+            <EditText
+                android:id="@+id/etReportMessage"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/edittextbackground"
+                android:inputType="textMultiLine"
+                android:maxLines="10"
+                android:text="dupada dawda wdawd awdawd awdawda" />
+
+            <Button
+                android:id="@+id/bSendCoordinates"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="Wyślij"
+
+                android:textSize="18dp" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+</android.support.constraint.ConstraintLayout>

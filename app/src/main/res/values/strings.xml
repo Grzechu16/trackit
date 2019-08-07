@@ -44,4 +44,5 @@
     <string name="main_sim_number">Numer SIM lokalizatora</string>
     <string name="main_gps_status">GPS status: BRAK POŁĄCZENIA</string>
     <string name="main_gsm_status">GSM status: BRAK POŁĄCZENIA</string>
+    <string name="download_from_base">Pobierz dane z bazy</string>
 </resources>

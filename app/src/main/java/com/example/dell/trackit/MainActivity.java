@@ -51,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
 
     @Bind(R.id.bGetLocation)
     Button buttonGetLocation;
+    @Bind(R.id.bGetDatabase)
+    Button buttonGetDatabase;
     @Bind(R.id.bShowOnMap)
     Button buttonShowOnMap;
     @Bind(R.id.tPositionDate)
@@ -72,10 +74,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
         location = new Location();
-        getLocation();
-        smsBroadcastRecInit();
         phoneNumber = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).getString("PhoneNumber", phoneNumber);
         editTextNumber.setText(phoneNumber);
+        if (phoneNumber != null) {
+            getLocation();
+        }
+        smsBroadcastRecInit();
     }
 
     @Override
@@ -133,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onGranted() {
                     smsManager = SmsManager.getDefault();
-                    smsManager.sendTextMessage(editTextNumber.getText().toString() /*730225319*/, null, "gps1", sentIntent, deliveryIntent);
+                    smsManager.sendTextMessage(editTextNumber.getText().toString(), null, "gps1", sentIntent, deliveryIntent);
                 }
 
                 @Override
@@ -155,33 +159,52 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.bShowOnMap)
     void showOnMap() {
-        Intent intent = new Intent(this, LocationDetailsActivity.class);
-        intent.putExtra("location", location);
-        intent.putExtra("phoneNumber", phoneNumber);
-        startActivity(intent);
+        if(location!=null){
+            Intent intent = new Intent(this, LocationDetailsActivity.class);
+            intent.putExtra("location", location);
+            intent.putExtra("phoneNumber", phoneNumber);
+            startActivity(intent);
+        } else{
+            showLongToast("Brak danych lokalizacyjnych, wprowadzź numer sim i pobierz je z bazy");
+            textPositionDate.setText("");
+            textQueryDate.setText("");
+            location = null;
+        }
+
     }
 
     void getLocation() {
+        if(location==null){
+           location = new Location();
+        }
         trackItDatabase = FirebaseDatabase.getInstance();
-        databaseReference = trackItDatabase.getReference().child("TrackIt").child("devices").child("731536061");
+        databaseReference = trackItDatabase.getReference().child("TrackIt").child("devices").child(editTextNumber.getText().toString());
         databaseReference.addValueEventListener(new ValueEventListener() {
                                                     @Override
                                                     public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                                                        location.setLatitude(dataSnapshot.child("latitude").getValue(Double.class));
-                                                        location.setLongitude(dataSnapshot.child("longitude").getValue(Double.class));
-                                                        location.setUpdateTime(dataSnapshot.child("updateTime").getValue().toString());
-                                                        location.setQueryTime(dataSnapshot.child("queryTime").getValue().toString());
-                                                        location.setGpsStatus(dataSnapshot.child("validGps").getValue(Integer.class));
-                                                        textQueryDate.setText(location.getQueryTime());
-                                                        textPositionDate.setText(location.getUpdateTime());
-                                                        if ((gsmStatus == true) && ((textPositionDate.getText()).equals(textQueryDate.getText()))) {
-                                                            textGpsConnection.setText("GPS status: OK");
-                                                            textGpsConnection.setTextColor(Color.GREEN);
-                                                        }
-                                                        if (location.getGpsStatus() == 0) {
-                                                            textGpsConnection.setText("GPS status: BRAK POŁĄCZENIA");
-                                                            textGpsConnection.setTextColor(Color.BLACK);
+                                                        try {
+                                                            location.setLatitude(dataSnapshot.child("latitude").getValue(Double.class));
+                                                            location.setLatitude(dataSnapshot.child("latitude").getValue(Double.class));
+                                                            location.setLongitude(dataSnapshot.child("longitude").getValue(Double.class));
+                                                            location.setUpdateTime(dataSnapshot.child("updateTime").getValue().toString());
+                                                            location.setQueryTime(dataSnapshot.child("queryTime").getValue().toString());
+                                                            location.setGpsStatus(dataSnapshot.child("validGps").getValue(Integer.class));
+                                                            textQueryDate.setText(location.getQueryTime());
+                                                            textPositionDate.setText(location.getUpdateTime());
+                                                            if ((gsmStatus == true) && ((textPositionDate.getText()).equals(textQueryDate.getText()))) {
+                                                                textGpsConnection.setText("GPS status: OK");
+                                                                textGpsConnection.setTextColor(Color.GREEN);
+                                                            }
+                                                            if (location.getGpsStatus() == 0) {
+                                                                textGpsConnection.setText("GPS status: BRAK POŁĄCZENIA");
+                                                                textGpsConnection.setTextColor(Color.BLACK);
+                                                            }
+                                                            showShortToast("Dane pobrane z bazy");
+                                                        } catch (NullPointerException e) {
+                                                            showLongToast("Brak danych dla wprowadzonego numeru, sprawdź wpisany numer SIM i połączenie z lokalizatorem!");
+                                                            textPositionDate.setText("");
+                                                            textQueryDate.setText("");
+                                                            location = null;
                                                         }
                                                     }
 
@@ -191,6 +214,11 @@ public class MainActivity extends AppCompatActivity {
                                                     }
                                                 }
         );
+    }
+
+    @OnClick(R.id.bGetDatabase)
+    void getDatabaseInfo() {
+        getLocation();
     }
 
     void smsBroadcastRecInit() {
@@ -241,4 +269,16 @@ public class MainActivity extends AppCompatActivity {
             registerReceiver(deliveryReceiver, new IntentFilter(smsDelivered));
         }
     }
+
+    void showShortToast(String text) {
+        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_SHORT);
+        toast.show();
+    }
+
+    void showLongToast(String text) {
+        Toast toast = Toast.makeText(getApplicationContext(), text, Toast.LENGTH_LONG);
+        toast.show();
+    }
 }
+
+

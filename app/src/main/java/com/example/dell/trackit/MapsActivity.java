@@ -1,18 +1,18 @@
 package com.example.dell.trackit;
 
-import android.content.Intent;
-import android.net.Uri;
-import android.support.v4.app.FragmentActivity;
-import android.os.Bundle;
+        import android.content.Intent;
+        import android.net.Uri;
+        import android.support.v4.app.FragmentActivity;
+        import android.os.Bundle;
 
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.OnMapReadyCallback;
-import com.google.android.gms.maps.SupportMapFragment;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
+        import com.google.android.gms.maps.CameraUpdateFactory;
+        import com.google.android.gms.maps.GoogleMap;
+        import com.google.android.gms.maps.OnMapReadyCallback;
+        import com.google.android.gms.maps.SupportMapFragment;
+        import com.google.android.gms.maps.model.LatLng;
+        import com.google.android.gms.maps.model.MarkerOptions;
 
-import java.util.Locale;
+        import java.util.Locale;
 
 public class MapsActivity extends FragmentActivity {
 
@@ -26,7 +26,8 @@ public class MapsActivity extends FragmentActivity {
         Intent intent = getIntent();
         location = intent.getParcelableExtra("mapLocation");
 
-        String uri = String.format(Locale.ENGLISH, "geo:%f,%f", location.getLatitude(), location.getLongitude());
+        //String uri = String.format(Locale.ENGLISH, "geo:%f,%f", location.getLatitude(), location.getLongitude());
+        String uri = String.format(Locale.ENGLISH,"https://www.google.com/maps/dir/?api=1&travelmode=driving&dir_action=navigate&destination=%f,%f", location.getLatitude(), location.getLongitude());
         Intent googleMapIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(uri));
         startActivity(googleMapIntent);
 

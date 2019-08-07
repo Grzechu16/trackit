@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="50dp"
+            android:layout_marginTop="20dp"
             android:layout_marginBottom="15dp"
             android:text="@string/appTitle"
             android:textSize="45dp"
@@ -74,14 +74,29 @@
                 android:textColor="	#000000"
                 android:textSize="16dp" />
 
-            <EditText
-                android:id="@+id/etPhoneNumber"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+            <LinearLayout
+                android:layout_width="228dp"
+                android:layout_height="48dp"
                 android:layout_marginTop="25dp"
-                android:gravity="center"
-                android:hint="@string/main_sim_number"
-                android:inputType="number" />
+                android:orientation="horizontal">
+
+                <EditText
+                    android:id="@+id/etPhoneNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:hint="@string/main_sim_number"
+                    android:inputType="number" />
+
+                <Button
+                    android:id="@+id/bGetDatabase"
+                    android:layout_width="24dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/refreshicon"
+                    android:tooltipText="@string/download_from_base"/>
+
+            </LinearLayout>
+
 
             <Button
                 android:id="@+id/bGetLocation"
@@ -93,12 +108,21 @@
                 android:textSize="18dp"
                 android:textStyle="italic" />
 
+
             <Button
                 android:id="@+id/bShowOnMap"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_margin="20dp"
                 android:text="@string/main_show_on_map"
+                android:textAllCaps="false"
+                android:textSize="18dp"
+                android:textStyle="italic" />
+
+            <Button
+                android:id="@+id/bReport"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Zgłoś kradzież"
                 android:textAllCaps="false"
                 android:textSize="18dp"
                 android:textStyle="italic" />
